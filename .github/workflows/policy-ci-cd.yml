@@ -1,0 +1,21 @@
+name: Policy & Operator CI/CD
+
+on:
+  pull_request:
+    paths:
+      - 'policies/**'
+      - 'operator/**'
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run kubeval and conftest
+        run: |
+          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz -O - | tar xz && sudo mv kubeval /usr/local/bin/
+          wget https://github.com/open-policy-agent/conftest/releases/latest/download/conftest_linux_amd64.tar.gz -O - | tar xz && sudo mv conftest /usr/local/bin/
+          kubeval policies/
+          conftest test policies/

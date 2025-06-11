@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: presync-policy-validate
+  annotations:
+    "argocd.argoproj.io/hook": PreSync
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: validate
+          image: openpolicyagent/conftest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Running validation"
+              kubeval .
+              conftest test .
+      restartPolicy: Never
