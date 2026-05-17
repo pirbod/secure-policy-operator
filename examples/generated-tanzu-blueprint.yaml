@@ -13,10 +13,9 @@ spec:
     policies: policies/regulated-policy-pack
     runbooks: runbooks/regulated-bank
   terraformModules:
-  - terraform/modules/tanzu-cluster
-  - terraform/modules/networking
-  - terraform/modules/identity
-  - terraform/modules/observability
+  - terraform/modules/vmware-tanzu
+  - terraform/modules/vmware-tanzu#ingress-package
+  - terraform/modules/vmware-tanzu#certificate-validation
   policyPack:
     name: regulated-policy-pack
     controls:

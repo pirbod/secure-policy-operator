@@ -13,10 +13,9 @@ spec:
     policies: policies/regulated-policy-pack
     runbooks: runbooks/manufacturing-cloud
   terraformModules:
-  - terraform/modules/openshift-cluster
-  - terraform/modules/networking
-  - terraform/modules/identity
-  - terraform/modules/observability
+  - terraform/modules/openshift
+  - terraform/modules/openshift#scc-mapping
+  - terraform/modules/openshift#network-segmentation
   policyPack:
     name: regulated-policy-pack
     controls:

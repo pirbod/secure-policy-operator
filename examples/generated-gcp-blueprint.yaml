@@ -13,10 +13,9 @@ spec:
     policies: policies/regulated-policy-pack
     runbooks: runbooks/regulated-bank
   terraformModules:
-  - terraform/modules/gke-cluster
-  - terraform/modules/networking
-  - terraform/modules/identity
-  - terraform/modules/observability
+  - terraform/modules/google-gke
+  - terraform/modules/google-gke#workload-identity
+  - terraform/modules/google-gke#audit-log-sink
   policyPack:
     name: regulated-policy-pack
     controls:

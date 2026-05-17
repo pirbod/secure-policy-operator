@@ -16,7 +16,8 @@ The PoC presents the original secure policy operator idea as a Customer Cloud En
 - FastAPI provides deterministic local API endpoints.
 - JSON and YAML files hold mock customer, policy, blueprint, support, and health data.
 - Existing `terraform/`, `policies/`, `argo-cd/`, and `operator/` assets are preserved.
-- The Go operator remains secondary to the clickable PoC, but now includes a PolicySource CRD, RBAC manifests, sample resource, and registered reconciler scaffold for future production hardening.
+- The Go operator remains secondary to the clickable PoC, but now includes a PolicySource CRD, RBAC/deployment manifests, a sample resource, and reconciler logic to clone policy repositories, apply Gatekeeper resources, and update status.
+- Terraform module contract directories describe Azure AKS, AWS EKS, GKE, OpenShift, and Tanzu deployment patterns referenced by generated blueprints.
 - Scripts demonstrate blueprint generation, environment validation, incident simulation, and pre-sales pack export.
 
 ## Features
@@ -118,6 +119,7 @@ The GitHub Actions workflow in `.github/workflows/poc-ci.yml` validates the whol
 - Kubernetes manifest validation with kubeconform
 - Policy manifest checks with conftest
 - Docker Compose smoke test for API and web startup
+- Operator image build using `operator/Dockerfile`
 
 ## Repository Structure
 
@@ -129,7 +131,7 @@ The GitHub Actions workflow in `.github/workflows/poc-ci.yml` validates the whol
 ├── examples              # Customer profiles and generated blueprint examples
 ├── scripts               # Local automation scripts for demos
 ├── argo-cd               # Preserved ArgoCD PreSync example
-├── operator              # Preserved Go operator scaffold plus CRD/RBAC manifests
+├── operator              # Preserved Go operator scaffold plus CRD/RBAC/deployment manifests
 ├── policies              # Preserved Gatekeeper policy examples
 └── terraform             # Preserved Terraform scaffold
 ```
@@ -171,7 +173,7 @@ make presales-pack
 
 - Replace mock data with customer profile storage and approval workflow.
 - Integrate live GitOps repositories and policy test results.
-- Add real Terraform module registry references.
+- Replace Terraform module contracts with real provider-backed modules or module registry references.
 - Connect to observability systems for environment health.
 - Add role-based access and audit trails.
 - Publish support knowledge into the enterprise support platform.
@@ -180,5 +182,5 @@ make presales-pack
 
 - All data is deterministic mock data.
 - No live cloud credentials or paid services are required.
-- The Go operator path is still not the runtime for the clickable demo; it is a preserved and improved scaffold for a future Kubernetes controller implementation.
+- The Go operator path is still not the runtime for the clickable demo; it is an improved scaffold and needs cluster integration tests before production use.
 - Policy and deployment results are simulated to demonstrate workflow and value.

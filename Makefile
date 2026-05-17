@@ -4,7 +4,7 @@ PY := $(VENV)/bin/python
 PIP := $(VENV)/bin/pip
 NPM ?= npm
 
-.PHONY: install dev api web test lint validate-demo generate-blueprint presales-pack
+.PHONY: install dev api web test lint format-check validate-demo generate-blueprint presales-pack
 
 install:
 	@if $(PYTHON) -c "import ensurepip" >/dev/null 2>&1; then \
@@ -27,9 +27,13 @@ test:
 	PYTHONPATH=$(CURDIR) $(PYTHON) -m unittest discover apps/api/tests
 
 lint:
+	PYTHONPATH=$(CURDIR) $(PYTHON) scripts/check_source_format.py
 	PYTHONPATH=$(CURDIR) $(PYTHON) -m compileall apps/api scripts
 	$(NPM) --prefix apps/web run typecheck
 	$(NPM) --prefix apps/web run build
+
+format-check:
+	PYTHONPATH=$(CURDIR) $(PYTHON) scripts/check_source_format.py
 
 validate-demo:
 	PYTHONPATH=$(CURDIR) $(PYTHON) scripts/validate_environment.py --profile examples/customer-profile-regulated-bank.yaml

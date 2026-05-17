@@ -11,6 +11,34 @@ PLATFORM_TARGETS = {
     "VMware Tanzu": ("hybrid", "tanzu"),
 }
 
+TERRAFORM_MODULES = {
+    "Azure AKS": [
+        "terraform/modules/azure-aks",
+        "terraform/modules/azure-aks#azure-policy-addon",
+        "terraform/modules/azure-aks#private-cluster",
+    ],
+    "AWS EKS": [
+        "terraform/modules/aws-eks",
+        "terraform/modules/aws-eks#irsa",
+        "terraform/modules/aws-eks#cloudwatch-observability",
+    ],
+    "Google GKE": [
+        "terraform/modules/google-gke",
+        "terraform/modules/google-gke#workload-identity",
+        "terraform/modules/google-gke#audit-log-sink",
+    ],
+    "OpenShift": [
+        "terraform/modules/openshift",
+        "terraform/modules/openshift#scc-mapping",
+        "terraform/modules/openshift#network-segmentation",
+    ],
+    "VMware Tanzu": [
+        "terraform/modules/vmware-tanzu",
+        "terraform/modules/vmware-tanzu#ingress-package",
+        "terraform/modules/vmware-tanzu#certificate-validation",
+    ],
+}
+
 PLATFORM_SECTIONS = {
     "Azure AKS": {
         "azureAks": {
@@ -106,12 +134,7 @@ def generate_blueprint(
                 "policies": f"policies/{policy_pack}",
                 "runbooks": f"runbooks/{slug}",
             },
-            "terraformModules": [
-                f"terraform/modules/{kubernetes_target}-cluster",
-                "terraform/modules/networking",
-                "terraform/modules/identity",
-                "terraform/modules/observability",
-            ],
+            "terraformModules": TERRAFORM_MODULES.get(target_cloud, [f"terraform/modules/{kubernetes_target}"]),
             "policyPack": {
                 "name": policy_pack,
                 "controls": [

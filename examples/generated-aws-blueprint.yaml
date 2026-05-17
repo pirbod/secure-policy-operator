@@ -13,10 +13,9 @@ spec:
     policies: policies/standard-policy-pack
     runbooks: runbooks/retail-commerce
   terraformModules:
-  - terraform/modules/eks-cluster
-  - terraform/modules/networking
-  - terraform/modules/identity
-  - terraform/modules/observability
+  - terraform/modules/aws-eks
+  - terraform/modules/aws-eks#irsa
+  - terraform/modules/aws-eks#cloudwatch-observability
   policyPack:
     name: standard-policy-pack
     controls:

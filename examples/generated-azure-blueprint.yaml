@@ -13,10 +13,9 @@ spec:
     policies: policies/regulated-policy-pack
     runbooks: runbooks/regulated-bank
   terraformModules:
-  - terraform/modules/aks-cluster
-  - terraform/modules/networking
-  - terraform/modules/identity
-  - terraform/modules/observability
+  - terraform/modules/azure-aks
+  - terraform/modules/azure-aks#azure-policy-addon
+  - terraform/modules/azure-aks#private-cluster
   policyPack:
     name: regulated-policy-pack
     controls:
