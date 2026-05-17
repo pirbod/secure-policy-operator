@@ -29,6 +29,17 @@ Support starts with a known issue search, maps the issue to a platform layer, ru
 
 Runbooks include triggers, steps, expected outcome, and support handover notes. Support should attach logs, validation output, customer impact, and escalation decision to every case.
 
+Every triage output should include:
+
+- issue summary
+- severity
+- impacted platform layer
+- known issue match
+- evidence required
+- runbook steps
+- customer-facing response
+- escalation decision
+
 ## Capturing Repeat Issues
 
 Repeat issues should be added to known issue mapping with a platform layer, root cause, remediation, and recommended customer response. The goal is to increase self-service and reduce engineering involvement over time.

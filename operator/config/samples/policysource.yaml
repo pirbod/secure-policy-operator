@@ -1,0 +1,11 @@
+apiVersion: policy.customer-cloud.io/v1alpha1
+kind: PolicySource
+metadata:
+  name: customer-cloud-baseline
+  namespace: secure-policy-operator-system
+spec:
+  repositoryUrl: https://github.com/pirbod/secure-policy-operator.git
+  revision: feature-operator
+  path: policies
+  targetNamespace: gatekeeper-system
+  validationMode: audit

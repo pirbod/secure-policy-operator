@@ -7,7 +7,11 @@ NPM ?= npm
 .PHONY: install dev api web test lint validate-demo generate-blueprint presales-pack
 
 install:
-	@$(PYTHON) -m venv $(VENV) && $(PIP) install --upgrade pip && $(PIP) install -r apps/api/requirements.txt || echo "Python virtualenv unavailable; API falls back to a local stdlib runner. Docker can run the FastAPI stack."
+	@if $(PYTHON) -c "import ensurepip" >/dev/null 2>&1; then \
+		$(PYTHON) -m venv $(VENV) && $(PIP) install --upgrade pip && $(PIP) install -r apps/api/requirements.txt; \
+	else \
+		echo "Python virtualenv unavailable; API falls back to a local stdlib runner. Docker can run the FastAPI stack."; \
+	fi
 	$(NPM) --prefix apps/web install
 
 api:

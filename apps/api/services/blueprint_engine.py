@@ -11,6 +11,54 @@ PLATFORM_TARGETS = {
     "VMware Tanzu": ("hybrid", "tanzu"),
 }
 
+PLATFORM_SECTIONS = {
+    "Azure AKS": {
+        "azureAks": {
+            "clusterMode": "private",
+            "azurePolicy": {"addon": "enabled", "initiative": "customer-cloud-regulated-baseline"},
+            "identity": "managed identity with workload identity federation",
+            "networking": ["private endpoint", "private DNS zone", "Azure CNI network policy"],
+            "logging": "AKS diagnostic settings to retained Log Analytics workspace",
+        }
+    },
+    "AWS EKS": {
+        "awsEks": {
+            "clusterMode": "private endpoint with controlled public access",
+            "identity": "IRSA service accounts for cloud permissions",
+            "observability": ["CloudWatch Container Insights", "Prometheus scrape", "OpenSearch dashboard export"],
+            "dataDependencies": ["Kafka security group reachability", "OpenSearch endpoint allow-list"],
+            "logging": "CloudWatch log groups with retention policy",
+        }
+    },
+    "Google GKE": {
+        "googleGke": {
+            "clusterMode": "private GKE cluster",
+            "identity": "Workload Identity pool and service account binding",
+            "audit": "admin activity and data access logs routed to retained sink",
+            "networking": ["private service connect", "authorized networks", "network policy"],
+            "logging": "Cloud Logging sink with compliance retention",
+        }
+    },
+    "OpenShift": {
+        "openShift": {
+            "securityContextConstraints": ["restricted-v2", "service account SCC review"],
+            "operatorPattern": "namespaced operator subscriptions managed by GitOps",
+            "networking": ["namespace deny-by-default", "egress allow-list", "route policy"],
+            "audit": "OpenShift audit profile evidence attached before regulated go-live",
+            "storage": "approved encrypted storage class for database-heavy workloads",
+        }
+    },
+    "VMware Tanzu": {
+        "vmwareTanzu": {
+            "packageManagement": ["cert-manager", "contour or ingress package", "external-secrets"],
+            "ingress": "domain, route, and TLS certificate chain validation",
+            "policy": "Tanzu package and pod security baseline mapping",
+            "observability": ["package health", "ingress synthetic check", "OpenSearch storage alert"],
+            "storage": "Tanzu storage policy mapped to stateful dependencies",
+        }
+    },
+}
+
 
 def find_blueprint(blueprints: list[dict[str, Any]], target: str) -> dict[str, Any] | None:
     normalized = target.lower()
@@ -78,6 +126,7 @@ def generate_blueprint(
                 "name": observability_pack,
                 "signals": ["cluster-health", "deployment-drift", "policy-violations", "support-readiness"],
             },
+            "platformSpecific": PLATFORM_SECTIONS.get(target_cloud, {}),
             "cicdGates": [
                 "terraform-plan-review",
                 "manifest-schema-validation",

@@ -16,6 +16,7 @@ The PoC presents the original secure policy operator idea as a Customer Cloud En
 - FastAPI provides deterministic local API endpoints.
 - JSON and YAML files hold mock customer, policy, blueprint, support, and health data.
 - Existing `terraform/`, `policies/`, `argo-cd/`, and `operator/` assets are preserved.
+- The Go operator remains secondary to the clickable PoC, but now includes a PolicySource CRD, RBAC manifests, sample resource, and registered reconciler scaffold for future production hardening.
 - Scripts demonstrate blueprint generation, environment validation, incident simulation, and pre-sales pack export.
 
 ## Features
@@ -94,7 +95,10 @@ The API is exposed on port `8000` and the web app on port `5173`.
 Captured screenshots are stored under `screenshots/` after visual verification:
 
 - `screenshots/executive-overview.png`
+- `screenshots/pre-sales-assistant.png`
 - `screenshots/deployment-blueprints.png`
+- `screenshots/policy-operator.png`
+- `screenshots/environment-operations.png`
 - `screenshots/support-runbooks.png`
 
 Regenerate them with:
@@ -104,6 +108,16 @@ node apps/web/scripts/capture_screenshots.mjs
 ```
 
 If the host lacks browser libraries, run the same script from a Playwright browser container.
+
+## CI Coverage
+
+The GitHub Actions workflow in `.github/workflows/poc-ci.yml` validates the whole PoC:
+
+- Python dependency install, compile check, unit tests, and demo script validation
+- Frontend dependency install, TypeScript typecheck, and production build
+- Kubernetes manifest validation with kubeconform
+- Policy manifest checks with conftest
+- Docker Compose smoke test for API and web startup
 
 ## Repository Structure
 
@@ -115,7 +129,7 @@ If the host lacks browser libraries, run the same script from a Playwright brows
 ├── examples              # Customer profiles and generated blueprint examples
 ├── scripts               # Local automation scripts for demos
 ├── argo-cd               # Preserved ArgoCD PreSync example
-├── operator              # Preserved Go operator scaffold
+├── operator              # Preserved Go operator scaffold plus CRD/RBAC manifests
 ├── policies              # Preserved Gatekeeper policy examples
 └── terraform             # Preserved Terraform scaffold
 ```
@@ -166,5 +180,5 @@ make presales-pack
 
 - All data is deterministic mock data.
 - No live cloud credentials or paid services are required.
-- The preserved Go operator remains scaffold code and is not required for the clickable demo.
+- The Go operator path is still not the runtime for the clickable demo; it is a preserved and improved scaffold for a future Kubernetes controller implementation.
 - Policy and deployment results are simulated to demonstrate workflow and value.

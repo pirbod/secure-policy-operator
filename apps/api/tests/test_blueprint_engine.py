@@ -18,6 +18,7 @@ class BlueprintEngineTests(unittest.TestCase):
 
         self.assertEqual(result["blueprint"]["spec"]["cloudProvider"], "azure")
         self.assertEqual(result["blueprint"]["spec"]["kubernetesTarget"], "aks")
+        self.assertEqual(result["blueprint"]["spec"]["platformSpecific"]["azureAks"]["clusterMode"], "private")
         self.assertIn("regulated-policy-pack", result["yaml"])
         self.assertIn("azure-policy-addon-missing", result["yaml"])
 
@@ -29,6 +30,15 @@ class BlueprintEngineTests(unittest.TestCase):
         runbooks = result["blueprint"]["spec"]["requiredRunbooks"]
         self.assertIn("kafka-dependency-reachability", runbooks)
         self.assertIn("policy-violation-remediation", runbooks)
+
+    def test_generate_blueprint_includes_platform_sections(self) -> None:
+        customer = next(item for item in customers() if item["id"] == "manufacturing-cloud")
+
+        result = generate_blueprint(customer, "OpenShift", "high", ["database-heavy"], ["PostgreSQL"])
+
+        platform = result["blueprint"]["spec"]["platformSpecific"]
+        self.assertIn("openShift", platform)
+        self.assertIn("securityContextConstraints", platform["openShift"])
 
 
 if __name__ == "__main__":

@@ -32,6 +32,18 @@ spec:
     - deployment-drift
     - policy-violations
     - support-readiness
+  platformSpecific:
+    azureAks:
+      clusterMode: private
+      azurePolicy:
+        addon: enabled
+        initiative: customer-cloud-regulated-baseline
+      identity: managed identity with workload identity federation
+      networking:
+      - private endpoint
+      - private DNS zone
+      - Azure CNI network policy
+      logging: AKS diagnostic settings to retained Log Analytics workspace
   cicdGates:
   - terraform-plan-review
   - manifest-schema-validation

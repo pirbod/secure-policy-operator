@@ -11,6 +11,7 @@ KEYWORD_PATTERNS = [
         "layer": "cloud prerequisite",
         "runbook_id": "azure-policy-addon-missing",
         "engineering": False,
+        "evidence": ["AKS add-on status", "ArgoCD PreSync job log", "Terraform plan or apply output"],
     },
     {
         "keywords": ["scc", "openshift", "blocked"],
@@ -19,6 +20,7 @@ KEYWORD_PATTERNS = [
         "layer": "platform policy",
         "runbook_id": "openshift-scc-blocked-workload",
         "engineering": False,
+        "evidence": ["pod admission event", "service account SCC binding", "securityContext snippet"],
     },
     {
         "keywords": ["tanzu", "ingress", "certificate"],
@@ -27,6 +29,7 @@ KEYWORD_PATTERNS = [
         "layer": "ingress",
         "runbook_id": "tanzu-ingress-certificate-check",
         "engineering": False,
+        "evidence": ["ingress package status", "DNS lookup", "certificate issuer and chain output"],
     },
     {
         "keywords": ["kafka", "reachable", "connect"],
@@ -35,6 +38,7 @@ KEYWORD_PATTERNS = [
         "layer": "data dependency",
         "runbook_id": "kafka-dependency-reachability",
         "engineering": False,
+        "evidence": ["pod network test", "DNS resolution output", "firewall or security group owner"],
     },
     {
         "keywords": ["opensearch", "disk", "pressure"],
@@ -43,6 +47,7 @@ KEYWORD_PATTERNS = [
         "layer": "data platform",
         "runbook_id": "opensearch-disk-pressure",
         "engineering": False,
+        "evidence": ["cluster health", "disk watermark metrics", "storage class and volume size"],
     },
     {
         "keywords": ["non-root", "non root", "pods", "policy"],
@@ -51,6 +56,7 @@ KEYWORD_PATTERNS = [
         "layer": "workload policy",
         "runbook_id": "non-root-policy-remediation",
         "engineering": False,
+        "evidence": ["Gatekeeper violation", "pod securityContext", "image user evidence"],
     },
     {
         "keywords": ["argocd", "presync", "sync"],
@@ -59,6 +65,7 @@ KEYWORD_PATTERNS = [
         "layer": "gitops validation",
         "runbook_id": "argocd-presync-validation-blocked",
         "engineering": False,
+        "evidence": ["ArgoCD sync event", "PreSync job log", "failed manifest path"],
     },
     {
         "keywords": ["audit", "logs", "regulated"],
@@ -67,6 +74,7 @@ KEYWORD_PATTERNS = [
         "layer": "observability",
         "runbook_id": "regulated-audit-logging-gap",
         "engineering": False,
+        "evidence": ["audit sink status", "retention policy", "sample audit event timestamp"],
     },
 ]
 
@@ -89,12 +97,21 @@ def triage_support_case(
     known_issue = _matching_case(description, support_cases)
 
     return {
+        "issue_summary": description,
         "likely_root_cause": pattern["root_cause"],
         "severity": pattern["severity"],
         "impacted_platform_layer": pattern["layer"],
         "matching_known_issue": known_issue,
+        "known_issue_match": known_issue["title"] if known_issue else None,
+        "evidence_required": pattern["evidence"],
         "recommended_runbook": runbook,
+        "runbook_steps": runbook.get("steps", []),
         "escalation_path": "Technical Support -> Platform Engineering only if runbook validation fails",
+        "escalation_decision": (
+            "support-owned: runbook-first resolution"
+            if not pattern["engineering"]
+            else "engineering escalation required"
+        ),
         "engineering_involvement_required": pattern["engineering"],
         "suggested_customer_response": (
             "We have matched this to a known environment pattern. "

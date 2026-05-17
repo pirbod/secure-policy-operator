@@ -1,0 +1,79 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: policysources.policy.customer-cloud.io
+spec:
+  group: policy.customer-cloud.io
+  scope: Namespaced
+  names:
+    plural: policysources
+    singular: policysource
+    kind: PolicySource
+    shortNames:
+      - psr
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required:
+                - repositoryUrl
+                - path
+              properties:
+                repositoryUrl:
+                  type: string
+                  description: Git repository containing policy manifests.
+                revision:
+                  type: string
+                  default: main
+                  description: Git revision to sync.
+                path:
+                  type: string
+                  description: Repository path containing Gatekeeper policy resources.
+                targetNamespace:
+                  type: string
+                  default: gatekeeper-system
+                  description: Namespace where policy resources are applied.
+                validationMode:
+                  type: string
+                  enum:
+                    - audit
+                    - enforce
+                  default: audit
+            status:
+              type: object
+              properties:
+                observedRevision:
+                  type: string
+                lastSyncTime:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      status:
+                        type: string
+                      reason:
+                        type: string
+                      message:
+                        type: string
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Revision
+          type: string
+          jsonPath: .spec.revision
+        - name: Mode
+          type: string
+          jsonPath: .spec.validationMode
+        - name: Last Sync
+          type: string
+          jsonPath: .status.lastSyncTime

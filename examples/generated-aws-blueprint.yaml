@@ -7,8 +7,67 @@ spec:
   cloudProvider: aws
   kubernetesTarget: eks
   complianceLevel: medium
+  gitOpsRepoLayout:
+    clusters: clusters/retail-commerce/eks
+    apps: apps/retail-commerce
+    policies: policies/standard-policy-pack
+    runbooks: runbooks/retail-commerce
+  terraformModules:
+  - terraform/modules/eks-cluster
+  - terraform/modules/networking
+  - terraform/modules/identity
+  - terraform/modules/observability
   policyPack:
     name: standard-policy-pack
+    controls:
+    - non-root-containers
+    - deny-privileged-containers
+    - required-network-policy
+    - approved-image-registries
+    - audit-logging-required
+  observabilityPack:
+    name: standard-observability
+    signals:
+    - cluster-health
+    - deployment-drift
+    - policy-violations
+    - support-readiness
+  platformSpecific:
+    awsEks:
+      clusterMode: private endpoint with controlled public access
+      identity: IRSA service accounts for cloud permissions
+      observability:
+      - CloudWatch Container Insights
+      - Prometheus scrape
+      - OpenSearch dashboard export
+      dataDependencies:
+      - Kafka security group reachability
+      - OpenSearch endpoint allow-list
+      logging: CloudWatch log groups with retention policy
+  cicdGates:
+  - terraform-plan-review
+  - manifest-schema-validation
+  - policy-conformance-test
+  - argocd-presync-validation
   requiredRunbooks:
-    - kafka-dependency-reachability
-    - policy-violation-remediation
+  - deployment-validation
+  - incident-handover
+  - kafka-dependency-reachability
+  - policy-violation-remediation
+  supportHandoverChecklist:
+  - customer profile attached
+  - known issues mapped
+  - observability dashboard linked
+  - escalation path agreed
+  - go-live validation recorded
+  estimatedGoLivePlan:
+  - day: 1
+    activity: confirm prerequisites and customer inputs
+  - day: 2
+    activity: apply Terraform landing zone modules
+  - day: 3
+    activity: sync GitOps baseline and policy pack
+  - day: 4
+    activity: validate observability, drift, and data dependencies
+  - day: 5
+    activity: support handover and controlled go-live

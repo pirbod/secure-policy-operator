@@ -6,12 +6,17 @@ import { StatCard } from "../components/StatCard";
 
 type RunbookMap = Record<string, Array<{ id: string; title: string; platforms: string[]; triggers: string[]; steps: string[]; expected_outcome: string }>>;
 type TriageResult = {
+  issue_summary: string;
   likely_root_cause: string;
   severity: string;
   impacted_platform_layer: string;
   matching_known_issue: SupportCase | null;
+  known_issue_match: string | null;
+  evidence_required: string[];
   recommended_runbook: { id: string; title: string; steps: string[]; expected_outcome: string };
+  runbook_steps: string[];
   escalation_path: string;
+  escalation_decision: string;
   engineering_involvement_required: boolean;
   suggested_customer_response: string;
 };
@@ -133,6 +138,8 @@ export function SupportRunbooks() {
                   <p><strong>Likely root cause:</strong> {triage.likely_root_cause}</p>
                   <p><strong>Severity:</strong> {triage.severity}</p>
                   <p><strong>Impacted layer:</strong> {triage.impacted_platform_layer}</p>
+                  <p><strong>Known issue match:</strong> {triage.known_issue_match ?? "No exact match"}</p>
+                  <p><strong>Escalation decision:</strong> {triage.escalation_decision}</p>
                   <p><strong>Escalation:</strong> {triage.escalation_path}</p>
                   <p><strong>Engineering involvement required:</strong> {triage.engineering_involvement_required ? "true" : "false"}</p>
                 </div>
@@ -141,10 +148,19 @@ export function SupportRunbooks() {
                 <h3 className="panel-title">Recommended Runbook</h3>
                 <p className="mt-3 font-bold text-slate-950">{triage.recommended_runbook.title}</p>
                 <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
-                  {triage.recommended_runbook.steps.map((step) => (
+                  {triage.runbook_steps.map((step) => (
                     <li key={step}>- {step}</li>
                   ))}
                 </ul>
+              </div>
+              <div className="panel border-amber-200 lg:col-span-2">
+                <h3 className="panel-title">Evidence Required</h3>
+                <div className="mt-3 grid gap-2 md:grid-cols-3">
+                  {triage.evidence_required.map((item) => (
+                    <div key={item} className="rounded-md bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-950">{item}</div>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm leading-6 text-slate-600"><strong>Customer response:</strong> {triage.suggested_customer_response}</p>
               </div>
             </div>
           ) : null}
