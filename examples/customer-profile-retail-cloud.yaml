@@ -1,0 +1,21 @@
+id: retail-commerce
+name: Retail Commerce
+industry: Retail
+cloud_provider: AWS
+platform_type: AWS EKS
+environment_stage: sales discovery
+compliance_level: medium
+services_required:
+  - Kafka
+  - Redis
+  - fast deployment target
+data_heavy_components:
+  - Kafka
+readiness_score: 76
+policy_compliance_score: 79
+observability_coverage: 84
+operational_risks:
+  - Kafka network reachability
+  - fast launch timeline
+missing_information:
+  - Kafka security group owner

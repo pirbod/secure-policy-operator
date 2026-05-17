@@ -1,0 +1,14 @@
+apiVersion: customer-cloud.platform/v1alpha1
+kind: CustomerEnvironmentBlueprint
+metadata:
+  name: retail-commerce-eks
+  customer: Retail Commerce
+spec:
+  cloudProvider: aws
+  kubernetesTarget: eks
+  complianceLevel: medium
+  policyPack:
+    name: standard-policy-pack
+  requiredRunbooks:
+    - kafka-dependency-reachability
+    - policy-violation-remediation

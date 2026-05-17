@@ -1,0 +1,24 @@
+id: regulated-bank
+name: Regulated Bank
+industry: Financial Services
+cloud_provider: Azure
+platform_type: Azure AKS
+environment_stage: pre-production
+compliance_level: high
+services_required:
+  - OpenSearch
+  - PostgreSQL
+  - audit logging
+  - private networking
+data_heavy_components:
+  - OpenSearch
+  - PostgreSQL
+readiness_score: 82
+policy_compliance_score: 87
+observability_coverage: 91
+operational_risks:
+  - strict audit logging evidence
+  - private endpoint approval
+  - data backup validation
+missing_information:
+  - final retention period approval

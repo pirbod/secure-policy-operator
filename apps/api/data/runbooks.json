@@ -1,0 +1,130 @@
+{
+  "deployment failures": [
+    {
+      "id": "deployment-validation",
+      "title": "Deployment validation baseline",
+      "platforms": ["all"],
+      "triggers": ["deployment failed", "readiness gate failed"],
+      "steps": ["Confirm prerequisite evidence", "Run policy evaluation", "Review GitOps sync status", "Attach validation summary"],
+      "expected_outcome": "Support confirms whether the issue is a missing input, policy failure, or platform issue."
+    },
+    {
+      "id": "argocd-presync-validation-blocked",
+      "title": "ArgoCD PreSync validation blocked",
+      "platforms": ["all"],
+      "triggers": ["argocd", "presync", "sync blocked"],
+      "steps": ["Open PreSync job logs", "Identify failed policy or schema check", "Apply manifest remediation", "Re-run sync"],
+      "expected_outcome": "Deployment resumes after manifest conformance is restored."
+    }
+  ],
+  "policy violations": [
+    {
+      "id": "non-root-policy-remediation",
+      "title": "Non-root container policy remediation",
+      "platforms": ["all"],
+      "triggers": ["non-root", "pod denied", "gatekeeper"],
+      "steps": ["Inspect denied pod security context", "Set runAsNonRoot", "Confirm image supports non-root user", "Re-run policy evaluation"],
+      "expected_outcome": "Workload starts without a privileged exception."
+    },
+    {
+      "id": "policy-violation-remediation",
+      "title": "Policy violation remediation",
+      "platforms": ["all"],
+      "triggers": ["policy violation", "gatekeeper", "azure policy"],
+      "steps": ["Map violation to control", "Apply documented remediation", "Record exception only if approved", "Update support notes"],
+      "expected_outcome": "Known policy failures are handled without engineering escalation."
+    }
+  ],
+  "cloud provider prerequisites": [
+    {
+      "id": "azure-policy-addon-missing",
+      "title": "Azure Policy add-on missing",
+      "platforms": ["Azure AKS"],
+      "triggers": ["azure policy", "aks add-on", "addon missing"],
+      "steps": ["Confirm AKS add-on state", "Enable Azure Policy add-on through Terraform", "Wait for policy pods", "Re-run PreSync validation"],
+      "expected_outcome": "AKS policy checks align with the shared policy pack."
+    },
+    {
+      "id": "regulated-audit-logging-gap",
+      "title": "Regulated audit logging gap",
+      "platforms": ["Azure AKS", "Google GKE", "OpenShift", "VMware Tanzu"],
+      "triggers": ["audit logs", "regulated", "evidence"],
+      "steps": ["Confirm audit sink target", "Validate retention setting", "Generate evidence screenshot", "Attach to go-live record"],
+      "expected_outcome": "Regulated environment has auditable evidence before handover."
+    }
+  ],
+  "Kubernetes issues": [
+    {
+      "id": "probe-and-resource-baseline",
+      "title": "Probe and resource baseline",
+      "platforms": ["all"],
+      "triggers": ["readiness probe", "resource limits", "rollout stuck"],
+      "steps": ["Inspect pod events", "Add resource requests and limits", "Add readiness and liveness probes", "Validate rollout"],
+      "expected_outcome": "Operations can detect failed rollouts and avoid noisy incidents."
+    }
+  ],
+  "OpenShift/Tanzu differences": [
+    {
+      "id": "openshift-scc-blocked-workload",
+      "title": "OpenShift SCC blocked workload",
+      "platforms": ["OpenShift"],
+      "triggers": ["openshift", "scc", "security context"],
+      "steps": ["Review SCC admission error", "Map workload to restricted-v2 expectations", "Adjust service account or manifest", "Capture approved exception if needed"],
+      "expected_outcome": "Workload runs under the expected OpenShift security model."
+    },
+    {
+      "id": "tanzu-ingress-certificate-check",
+      "title": "Tanzu ingress and certificate check",
+      "platforms": ["VMware Tanzu"],
+      "triggers": ["tanzu", "ingress", "certificate"],
+      "steps": ["Verify ingress package status", "Check DNS and route", "Validate certificate issuer", "Re-run TLS readiness check"],
+      "expected_outcome": "Ingress is reachable with a valid certificate chain."
+    }
+  ],
+  "OpenSearch/Kafka/database issues": [
+    {
+      "id": "kafka-dependency-reachability",
+      "title": "Kafka dependency reachability",
+      "platforms": ["AWS EKS", "Azure AKS", "all"],
+      "triggers": ["kafka", "network", "unreachable"],
+      "steps": ["Run network reachability test", "Confirm security group or firewall owner", "Validate DNS", "Record dependency status in support summary"],
+      "expected_outcome": "Kafka connection issues are isolated to network, DNS, or credentials."
+    },
+    {
+      "id": "opensearch-disk-pressure",
+      "title": "OpenSearch disk pressure",
+      "platforms": ["VMware Tanzu", "Azure AKS", "all"],
+      "triggers": ["opensearch", "disk pressure", "storage"],
+      "steps": ["Check shard allocation and disk watermark", "Confirm storage class", "Scale storage or reduce shard pressure", "Add alert to environment profile"],
+      "expected_outcome": "OpenSearch is stabilized and storage sizing is captured for future blueprints."
+    },
+    {
+      "id": "database-storage-and-backup",
+      "title": "Database storage and backup validation",
+      "platforms": ["OpenShift", "Azure AKS", "Google GKE", "all"],
+      "triggers": ["database", "postgresql", "backup"],
+      "steps": ["Confirm storage class", "Validate backup schedule", "Run restore evidence check", "Attach owner and retention details"],
+      "expected_outcome": "Data-heavy workloads meet storage and recovery requirements."
+    }
+  ],
+  "observability gaps": [
+    {
+      "id": "observability-coverage-gap",
+      "title": "Observability coverage gap",
+      "platforms": ["all"],
+      "triggers": ["missing metrics", "missing logs", "no dashboard"],
+      "steps": ["Check metrics scrape", "Check log flow", "Attach dashboard link", "Update support handover"],
+      "expected_outcome": "Support has enough signals to resolve common incidents."
+    }
+  ],
+  "incident handover": [
+    {
+      "id": "incident-handover",
+      "title": "Incident handover summary",
+      "platforms": ["all"],
+      "triggers": ["support summary", "handover", "incident"],
+      "steps": ["Summarize customer impact", "Attach policy and drift status", "Attach runbook outcome", "State escalation decision"],
+      "expected_outcome": "Engineering receives only escalations with clear reproduction and evidence."
+    }
+  ]
+}

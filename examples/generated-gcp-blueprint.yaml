@@ -1,0 +1,14 @@
+apiVersion: customer-cloud.platform/v1alpha1
+kind: CustomerEnvironmentBlueprint
+metadata:
+  name: public-sector-portal-gke
+  customer: Public Sector Portal
+spec:
+  cloudProvider: gcp
+  kubernetesTarget: gke
+  complianceLevel: high
+  policyPack:
+    name: regulated-policy-pack
+  requiredRunbooks:
+    - regulated-audit-logging-gap
+    - deployment-validation

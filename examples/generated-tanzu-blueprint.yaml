@@ -1,0 +1,14 @@
+apiVersion: customer-cloud.platform/v1alpha1
+kind: CustomerEnvironmentBlueprint
+metadata:
+  name: enterprise-saas-tanzu
+  customer: Enterprise SaaS
+spec:
+  cloudProvider: hybrid
+  kubernetesTarget: tanzu
+  complianceLevel: medium
+  policyPack:
+    name: standard-policy-pack
+  requiredRunbooks:
+    - tanzu-ingress-certificate-check
+    - opensearch-disk-pressure

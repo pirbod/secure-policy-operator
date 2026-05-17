@@ -1,0 +1,187 @@
+{
+  "Kubernetes baseline": [
+    {
+      "id": "non-root-containers",
+      "title": "Containers must run as non-root",
+      "severity": "high",
+      "description": "Workloads must set a non-root user or security context.",
+      "remediation": "Set runAsNonRoot and runAsUser in the pod or container security context.",
+      "mappings": {
+        "gatekeeper": "K8sPSPAllowedUsers",
+        "azure_policy": "Kubernetes cluster containers should run with a non-root user",
+        "openshift_scc": "restricted-v2",
+        "tanzu": "Tanzu Application Platform restricted pod security"
+      }
+    },
+    {
+      "id": "resource-requests-limits",
+      "title": "Resource requests and limits required",
+      "severity": "medium",
+      "description": "Pods must declare CPU and memory requests and limits.",
+      "remediation": "Add resource requests and limits to every application container.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredResources",
+        "azure_policy": "Kubernetes cluster containers CPU and memory resource limits should not exceed limits",
+        "openshift_scc": "quota and limit range",
+        "tanzu": "workload resource policy"
+      }
+    },
+    {
+      "id": "liveness-readiness-probes",
+      "title": "Liveness and readiness probes required",
+      "severity": "medium",
+      "description": "Services need health probes so operations can detect broken rollouts.",
+      "remediation": "Add livenessProbe and readinessProbe to deployment manifests.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredProbes",
+        "azure_policy": "custom Azure Policy initiative",
+        "openshift_scc": "deployment health policy",
+        "tanzu": "supply chain health check"
+      }
+    }
+  ],
+  "Container security": [
+    {
+      "id": "deny-privileged-containers",
+      "title": "Privileged containers denied",
+      "severity": "critical",
+      "description": "Privileged pods are blocked unless an approved exception exists.",
+      "remediation": "Remove privileged mode or attach a documented exception approved by platform security.",
+      "mappings": {
+        "gatekeeper": "K8sPSPPrivilegedContainer",
+        "azure_policy": "Kubernetes cluster privileged containers should be avoided",
+        "openshift_scc": "restricted-v2",
+        "tanzu": "restricted pod security"
+      }
+    },
+    {
+      "id": "restrict-hostpath",
+      "title": "hostPath volumes restricted",
+      "severity": "high",
+      "description": "hostPath mounts are restricted to prevent node escape paths.",
+      "remediation": "Replace hostPath usage with a persistent volume or approved CSI driver.",
+      "mappings": {
+        "gatekeeper": "K8sPSPHostFilesystem",
+        "azure_policy": "Kubernetes cluster pod hostPath volume mounts should not be used",
+        "openshift_scc": "restricted-v2 volume strategy",
+        "tanzu": "restricted volume policy"
+      }
+    },
+    {
+      "id": "approved-image-registries",
+      "title": "Approved image registries required",
+      "severity": "high",
+      "description": "Images must come from approved and scanned registries.",
+      "remediation": "Move images to the approved registry and attach scan evidence.",
+      "mappings": {
+        "gatekeeper": "K8sAllowedRepos",
+        "azure_policy": "custom allowed container images policy",
+        "openshift_scc": "image content source policy",
+        "tanzu": "image policy webhooks"
+      }
+    }
+  ],
+  "Workload identity": [
+    {
+      "id": "required-workload-identity",
+      "title": "Workload identity configuration required",
+      "severity": "high",
+      "description": "Cloud access must use workload identity rather than static credentials.",
+      "remediation": "Configure managed identity, IRSA, Workload Identity, or platform equivalent.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredLabels for identity binding",
+        "azure_policy": "AKS managed identity policy",
+        "openshift_scc": "service account and RBAC review",
+        "tanzu": "service account identity policy"
+      }
+    }
+  ],
+  "Network policy": [
+    {
+      "id": "required-network-policy",
+      "title": "Network policies required",
+      "severity": "high",
+      "description": "Namespaces must include ingress and egress network policies.",
+      "remediation": "Apply baseline deny-by-default policies and explicit service dependency rules.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredNetworkPolicy",
+        "azure_policy": "Kubernetes cluster namespaces should use network policies",
+        "openshift_scc": "network policy admission",
+        "tanzu": "namespace network policy"
+      }
+    }
+  ],
+  "Secrets management": [
+    {
+      "id": "secret-management-pattern",
+      "title": "Required secret management pattern",
+      "severity": "high",
+      "description": "Secrets must be sourced from an approved vault or external secret operator.",
+      "remediation": "Use external secrets with the cloud or enterprise vault integration.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredSecretStore",
+        "azure_policy": "Key Vault and CSI driver initiative",
+        "openshift_scc": "secret store CSI review",
+        "tanzu": "external secrets package policy"
+      }
+    }
+  ],
+  "Audit logging": [
+    {
+      "id": "audit-logging-required",
+      "title": "Audit logging required",
+      "severity": "critical",
+      "description": "Regulated environments must emit audit logs to a retained evidence store.",
+      "remediation": "Enable platform audit logging, retention, and dashboard evidence before go-live.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredAuditAnnotations",
+        "azure_policy": "AKS diagnostic settings should be enabled",
+        "openshift_scc": "audit policy evidence",
+        "tanzu": "audit sink validation"
+      }
+    }
+  ],
+  "Data platform hardening": [
+    {
+      "id": "required-storage-class",
+      "title": "Persistent storage class required",
+      "severity": "medium",
+      "description": "Stateful workloads must use an approved storage class.",
+      "remediation": "Set storageClassName to the approved encrypted storage class.",
+      "mappings": {
+        "gatekeeper": "K8sAllowedStorageClass",
+        "azure_policy": "Azure Disk encryption policy",
+        "openshift_scc": "storage class admission",
+        "tanzu": "storage policy class"
+      }
+    },
+    {
+      "id": "backup-policy-data-heavy",
+      "title": "Backup policy required for data-heavy systems",
+      "severity": "high",
+      "description": "Kafka, OpenSearch, and database-heavy workloads require backup and recovery evidence.",
+      "remediation": "Attach backup policy, restore test, and retention evidence to the environment profile.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredBackupPolicy",
+        "azure_policy": "backup and recovery initiative",
+        "openshift_scc": "OADP backup policy",
+        "tanzu": "Velero backup policy"
+      }
+    }
+  ],
+  "Regulated environment controls": [
+    {
+      "id": "regulated-change-evidence",
+      "title": "Change evidence required for regulated environments",
+      "severity": "high",
+      "description": "Regulated go-live requires evidence for policy, drift, audit, and support handover.",
+      "remediation": "Generate the regulated go-live evidence pack before production approval.",
+      "mappings": {
+        "gatekeeper": "K8sRequiredChangeTicket",
+        "azure_policy": "regulated initiative assignment",
+        "openshift_scc": "regulated change review",
+        "tanzu": "regulated environment control"
+      }
+    }
+  ]
+}

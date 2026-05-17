@@ -1,0 +1,20 @@
+[
+  {
+    "id": "regulated-private-cloud",
+    "name": "Regulated private connectivity pattern",
+    "targets": ["Azure AKS", "Google GKE", "OpenShift"],
+    "outcome": "High-compliance deployments with private networking, identity controls, and audit evidence."
+  },
+  {
+    "id": "rapid-commercial-cloud",
+    "name": "Rapid commercial onboarding pattern",
+    "targets": ["AWS EKS", "Azure AKS"],
+    "outcome": "Fast deployment with standard GitOps overlays, data reachability checks, and support handover."
+  },
+  {
+    "id": "enterprise-hybrid-platform",
+    "name": "Enterprise hybrid platform pattern",
+    "targets": ["OpenShift", "VMware Tanzu"],
+    "outcome": "Platform-specific policy mapping for SCC, ingress, certificates, and data services."
+  }
+]

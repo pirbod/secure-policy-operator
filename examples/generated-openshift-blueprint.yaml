@@ -1,0 +1,14 @@
+apiVersion: customer-cloud.platform/v1alpha1
+kind: CustomerEnvironmentBlueprint
+metadata:
+  name: manufacturing-cloud-openshift
+  customer: Manufacturing Cloud
+spec:
+  cloudProvider: hybrid
+  kubernetesTarget: openshift
+  complianceLevel: high
+  policyPack:
+    name: regulated-policy-pack
+  requiredRunbooks:
+    - openshift-scc-blocked-workload
+    - database-storage-and-backup

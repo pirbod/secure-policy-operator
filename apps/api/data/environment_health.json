@@ -1,0 +1,80 @@
+[
+  {
+    "customer_id": "regulated-bank",
+    "customer": "Regulated Bank",
+    "platform": "Azure AKS",
+    "health_status": "watch",
+    "deployment_drift": "none",
+    "failed_checks": 1,
+    "policy_violations": 2,
+    "observability_coverage": 91,
+    "open_incidents": 1,
+    "support_readiness": 78,
+    "last_validation_time": "2026-05-15T10:15:00Z"
+  },
+  {
+    "customer_id": "retail-commerce",
+    "customer": "Retail Commerce",
+    "platform": "AWS EKS",
+    "health_status": "watch",
+    "deployment_drift": "low",
+    "failed_checks": 2,
+    "policy_violations": 3,
+    "observability_coverage": 84,
+    "open_incidents": 2,
+    "support_readiness": 70,
+    "last_validation_time": "2026-05-14T12:30:00Z"
+  },
+  {
+    "customer_id": "manufacturing-cloud",
+    "customer": "Manufacturing Cloud",
+    "platform": "OpenShift",
+    "health_status": "risk",
+    "deployment_drift": "medium",
+    "failed_checks": 4,
+    "policy_violations": 5,
+    "observability_coverage": 78,
+    "open_incidents": 3,
+    "support_readiness": 62,
+    "last_validation_time": "2026-05-13T16:20:00Z"
+  },
+  {
+    "customer_id": "public-sector-portal",
+    "customer": "Public Sector Portal",
+    "platform": "Google GKE",
+    "health_status": "watch",
+    "deployment_drift": "low",
+    "failed_checks": 2,
+    "policy_violations": 2,
+    "observability_coverage": 88,
+    "open_incidents": 1,
+    "support_readiness": 72,
+    "last_validation_time": "2026-05-15T08:45:00Z"
+  },
+  {
+    "customer_id": "enterprise-saas",
+    "customer": "Enterprise SaaS",
+    "platform": "VMware Tanzu",
+    "health_status": "risk",
+    "deployment_drift": "medium",
+    "failed_checks": 3,
+    "policy_violations": 4,
+    "observability_coverage": 74,
+    "open_incidents": 2,
+    "support_readiness": 58,
+    "last_validation_time": "2026-05-12T09:10:00Z"
+  },
+  {
+    "customer_id": "logistics-platform",
+    "customer": "Logistics Platform",
+    "platform": "Azure AKS",
+    "health_status": "healthy",
+    "deployment_drift": "none",
+    "failed_checks": 0,
+    "policy_violations": 1,
+    "observability_coverage": 93,
+    "open_incidents": 0,
+    "support_readiness": 91,
+    "last_validation_time": "2026-05-16T11:00:00Z"
+  }
+]

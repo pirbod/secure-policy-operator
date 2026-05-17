@@ -1,0 +1,24 @@
+id: manufacturing-cloud
+name: Manufacturing Cloud
+industry: Manufacturing
+cloud_provider: Hybrid
+platform_type: OpenShift
+environment_stage: architecture review
+compliance_level: high
+services_required:
+  - database-heavy
+  - strict network segmentation
+  - audit logging
+data_heavy_components:
+  - PostgreSQL
+  - legacy reporting database
+readiness_score: 68
+policy_compliance_score: 73
+observability_coverage: 78
+operational_risks:
+  - strict network segmentation
+  - OpenShift SCC differences
+  - database backup owner missing
+missing_information:
+  - database backup owner
+  - network segmentation test window

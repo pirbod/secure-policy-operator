@@ -1,0 +1,82 @@
+[
+  {
+    "id": "case-001",
+    "title": "AKS deployment fails because Azure Policy add-on is missing",
+    "description": "ArgoCD PreSync validation detects missing Azure Policy add-on on the AKS cluster.",
+    "platform": "Azure AKS",
+    "status": "open",
+    "severity": "high",
+    "repeat_issue": true,
+    "customer_id": "regulated-bank"
+  },
+  {
+    "id": "case-002",
+    "title": "OpenShift workload blocked by SCC",
+    "description": "Manufacturing workload cannot start because the service account is bound to an incompatible SCC.",
+    "platform": "OpenShift",
+    "status": "open",
+    "severity": "medium",
+    "repeat_issue": true,
+    "customer_id": "manufacturing-cloud"
+  },
+  {
+    "id": "case-003",
+    "title": "Tanzu ingress misconfigured",
+    "description": "Application route resolves but TLS chain is incomplete in the Tanzu ingress profile.",
+    "platform": "VMware Tanzu",
+    "status": "open",
+    "severity": "medium",
+    "repeat_issue": true,
+    "customer_id": "enterprise-saas"
+  },
+  {
+    "id": "case-004",
+    "title": "Kafka dependency not reachable",
+    "description": "Application pods fail readiness because the Kafka endpoint is blocked by network rules.",
+    "platform": "AWS EKS",
+    "status": "open",
+    "severity": "high",
+    "repeat_issue": true,
+    "customer_id": "retail-commerce"
+  },
+  {
+    "id": "case-005",
+    "title": "OpenSearch disk pressure",
+    "description": "OpenSearch data nodes report disk pressure after default storage sizing was used.",
+    "platform": "VMware Tanzu",
+    "status": "open",
+    "severity": "high",
+    "repeat_issue": true,
+    "customer_id": "enterprise-saas"
+  },
+  {
+    "id": "case-006",
+    "title": "Kubernetes pods failing due to non-root policy",
+    "description": "Gatekeeper denies pods because the image expects root and no securityContext override exists.",
+    "platform": "Azure AKS",
+    "status": "resolved",
+    "severity": "medium",
+    "repeat_issue": true,
+    "customer_id": "logistics-platform"
+  },
+  {
+    "id": "case-007",
+    "title": "ArgoCD sync blocked by PreSync validation",
+    "description": "PreSync validation blocks rollout because required probes and resource limits are missing.",
+    "platform": "Google GKE",
+    "status": "open",
+    "severity": "medium",
+    "repeat_issue": true,
+    "customer_id": "public-sector-portal"
+  },
+  {
+    "id": "case-008",
+    "title": "Missing audit logs for regulated environment",
+    "description": "Regulated go-live evidence fails because audit logs are not flowing into the retained workspace.",
+    "platform": "Google GKE",
+    "status": "open",
+    "severity": "high",
+    "repeat_issue": true,
+    "customer_id": "public-sector-portal"
+  }
+]
